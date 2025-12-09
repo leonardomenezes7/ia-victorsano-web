@@ -1,3 +1,13 @@
+function arrayBufferToBase64(buffer: ArrayBuffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
 import { useRef, useState } from "react"
 
 export function useAudio() {
@@ -46,15 +56,8 @@ export function useAudio() {
   }
 
   async function sendAudioToN8N(file: File) {
-    const base64 = await new Promise<string>((resolve) => {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        const result = reader.result as string
-        const b64 = result.split(",")[1]
-        resolve(b64)
-      }
-      reader.readAsDataURL(file)
-    })
+    const arrayBuffer = await file.arrayBuffer();
+    const base64 = arrayBufferToBase64(arrayBuffer);
 
     const res = await fetch("https://n8n.victorsano.com/webhook/b36af2a5-4f43-4636-8b5d-cfc3b73e8df2", {
       method: "POST",

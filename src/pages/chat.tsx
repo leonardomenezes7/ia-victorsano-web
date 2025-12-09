@@ -14,7 +14,7 @@ export function Chat() {
         <div className="w-full max-w-3xl border rounded-xl p-6 bg-slate-50 flex flex-col flex-1 min-h-0">
           <div className="flex-1 min-h-0 overflow-y-auto">
             <MessageList
-              messages={ messages }
+              messages={messages}
             />
           </div>
           <ChatInput 
